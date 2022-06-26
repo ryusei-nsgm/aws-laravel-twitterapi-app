@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('bazz_reaches', function (Blueprint $table) {
             $table->id();
+            $table->string('search_word');
+            $table->text('total_tweets')->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
