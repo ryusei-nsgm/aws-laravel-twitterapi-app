@@ -15,7 +15,7 @@ class BazzReachController extends Controller
      */
     public function index()
     {
-        //
+        return view('bazzreachs.index');
     }
 
     /**
