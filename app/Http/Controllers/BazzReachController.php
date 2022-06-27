@@ -100,4 +100,23 @@ class BazzReachController extends Controller
         $bazzReachs = BazzReach::orderBy('created_at', 'desc')->get();
         return view('bazzreachs.index', compact('searchWord','tweetResult','totalTweets','bazzReachs'));
     }
+
+    public function bazzsearch(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $bazzReachs;
+
+        if(empty($keyword)){
+            $bazzReachs = BazzReach::orderBy('created_at', 'desc')->get();
+        }else{
+            $query = BazzReach::query();
+            $keywords = explode(" ", $keyword);
+
+            foreach ($keywords as $Key => $Value) {
+                $query->orWhere('search_word', 'ilike', '%'.$Value.'%');
+            }
+            $bazzReachs = $query->orderBy('created_at', 'desc')->get();
+        }
+        return view('bazzreachs.index', compact('bazzReachs'));
+    }
 }

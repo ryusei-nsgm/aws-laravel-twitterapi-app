@@ -118,13 +118,14 @@
                     <div class="title-box">
                         <h5 class="sub-title text-primary text-uppercase">Analysis</h5>
                         <div class="search-form mt-5">
-                            <form name="bazz_search_form" method="POST" action="#">
-                                <input type="text" name="keyword" placeholder="キーワード検索で絞り込みができます">
+                            <form name="bazz_search_form" method="POST" action="{{route('bazzreach.bazzsearch')}}">
+                                {{ csrf_field() }}
+                                <input type="text" name="keyword" placeholder="キーワード検索で絞り込みができます" value="{{ old('keyword') }}">
                                 <button type="submit" class="btn btn-primary btn-round">検索</button>
                             </form>
                         </div>
                         <h5 class="mt-3 fw-normal">
-                        検索データ0件が該当しました。
+                            検索データ{{sizeof($bazzReachs)}}件が該当しました。
                         </h5>
                     </div>
                 </div>
