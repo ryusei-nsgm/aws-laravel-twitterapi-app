@@ -12,16 +12,16 @@
     <link rel="shortcut icon" href="images/favicon.ico">
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css">
 
     <!--Material Icon -->
-    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/materialdesignicons.min.css') }}" />
 
     <!-- Pe-icon-7 icon -->
-    <link rel="stylesheet" type="text/css" href="css/pe-icon-7-stroke.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/pe-icon-7-stroke.css') }}">
 
     <!-- Custom  Css -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}" />
 
 </head>
 
@@ -30,7 +30,7 @@
     <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-light" id="navbar">
         <div class="container">
             <a class="navbar-brand logo text-uppercase" href="index.html">
-                <img src="images/logo.png" alt="" height="24" />
+                <img src="{{ asset('images/logo.png') }}" alt="" height="24" />
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,35 +74,38 @@
                         <div class="home-border my-3 mt-4"></div>
                         <p class="home-subtitle pt-4 mx-auto">キーワードからツイッターを検索して分析しよう</p>
                         <div class="search-form mt-5">
-                            <form name="search_form" method="POST" action="#">
-                                <input type="text" name="search_word" placeholder="キーワードを入力してください">
-                                <button type="submit" class="btn btn-primary btn-round">検索</button>
-                            </form>
+                          <form name="search_form" method="POST" action="{{route('bazzreach.search')}}">
+                              {{ csrf_field() }}
+                              <input type="text" name="search_word" placeholder="キーワードを入力してください" value="{{ old('search_word') }}">
+                              <button type="submit" class="btn btn-primary btn-round">検索</button>
+                          </form>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <form name="create_form" method="POST" action="#">
-                <div class="row mt-5 pt-3">
-                    <div class="col-lg-12">
-                        <div class="service-box active mt-4">
-                            <div class="services-icon">
-                                <i class="pe-7s-display2"></i>
-                            </div>
-                            <div class="mt-3">
-                                <h5 class="mb-3 f-17 mt-4">Webマーケティング</h5>
-                                <p class="text-muted mb-0">WebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティング</p>
-                                <div class="mt-3">
-                                    <button type="submit" class="btn btn-primary btn-round">検索ツイートを保存する</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" name="search_word" value="Webマーケティング">
-                <input type="hidden" name="total_tweets" value="WebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティングWebマーケティング">
-            </form>
+              @isset ($totalTweets)a
+              <form name="create_form" method="POST" action="{{route('bazzreach.store')}}">
+                  <div class="row mt-5 pt-3">
+                      <div class="col-lg-12">
+                          <div class="service-box active mt-4">
+                              <div class="services-icon">
+                                  <i class="pe-7s-display2"></i>
+                              </div>
+                              <div class="mt-3">
+                                  <h5 class="mb-3 f-17 mt-4">{{$searchWord}}</h5>
+                                  <p class="text-muted mb-0">{!! nl2br(e($tweetResult)) !!}</p>
+                                  <div class="mt-3">
+                                      <button type="submit" class="btn btn-primary btn-round">検索ツイートを保存する</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  {{ csrf_field() }}
+                  <input type="hidden" name="search_word" value="{{$searchWord}}">
+                  <input type="hidden" name="total_tweets" value="{{$totalTweets}}">
+              </form>
+              @endisset
         </div>
     </section>
     <!-- END HOME -->
@@ -411,7 +414,6 @@
             
             <div class="row">
                 <div class="col-lg-12">
-                    <img src="images/logo.png" alt="" height="24">
 
                     <p class="text-white-50 float-end mb-0">
                         Copyright © 2021 Shunta Sako All Rights Reserved.
@@ -425,15 +427,15 @@
     </section>
 
     <!-- bootstrap -->
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <!-- JAVASCRIPTS -->
-    <script src="js/smooth-scroll.polyfills.min.js"></script>
-    <script src="js/gumshoe.polyfills.min.js"></script>
+    <script src="{{ asset('js/smooth-scroll.polyfills.min.js') }}"></script>
+    <script src="{{ asset('js/gumshoe.polyfills.min.js') }}"></script>
     <!--Partical js-->
-    <script src="js/particles.js"></script>
-    <script src="js/particles.app.js"></script>
+    <script src="{{ asset('js/particles.js') }}"></script>
+    <script src="{{ asset('js/particles.app.js') }}"></script>
     <!-- CUSTOM JS -->
-    <script src="js/app.js" defer="defer"></script>
+    <script src="{{ asset('js/app.js') }}" defer="defer"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </body>
