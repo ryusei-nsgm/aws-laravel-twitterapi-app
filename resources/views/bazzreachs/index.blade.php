@@ -83,7 +83,7 @@
                     </div>
                 </div>
             </div>
-              @isset ($totalTweets)a
+              @isset ($totalTweets)
               <form name="create_form" method="POST" action="{{route('bazzreach.store')}}">
                   <div class="row mt-5 pt-3">
                       <div class="col-lg-12">
@@ -135,8 +135,9 @@
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
                         <div class="carousel-inner">
 
-
-                            <div class="carousel-item active">
+                          @isset ($bazzReachs)
+                          @foreach($bazzReachs as $bazzReach)
+                            <div class="carousel-item @if($loop->first) active @endif">
                                 <div class="client-box">
                                     <div class="row">
                                         <div class="col-2">
@@ -148,10 +149,10 @@
                                             <div class="mt-4">
                                                 <div class="client-content">
                                                     <div class="client-icon mt-4 pt-2">
-                                                        <h5 class="f-17 mt-3 mb-2 text-primary"><i class="mdi mdi-format-quote-close"></i>検索キーワード：Webマーケティング</h5>
+                                                        <h5 class="f-17 mt-3 mb-2 text-primary"><i class="mdi mdi-format-quote-close"></i>検索キーワード：{{ $bazzReach->search_word }}</h5>
                                                     </div>
                                                     
-                                                    <p class="text-primary mb-0 f-14">4時間前</p>
+                                                    <p class="text-primary mb-0 f-14">{{ $bazzReach->created_at->diffForHumans() }}</p>
 
                                                     <div class="col-lg-12">
                                                         <div class="price-box mt-4">
@@ -159,7 +160,7 @@
                                                                 <span class="badge">BazzReach</span>
                                                             </div>
                                                             <h5 class="f-19 fw-normal line-height_1_6">
-                                                                ツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイート
+                                                                {!! nl2br(e(Str::limit($bazzReach->total_tweets, 300))) !!}
                                                             </h5>
                                                             <div class="mt-5 text-center">
                                                                 <form name="destroy_form" action="#" method="POST">
@@ -261,133 +262,8 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="carousel-item">
-                                <div class="client-box">
-                                    <div class="row">
-                                        <div class="col-2">
-                                            <div class="client-img mt-4">
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="mt-4">
-                                                <div class="client-content">
-                                                    <div class="client-icon mt-4 pt-2">
-                                                        <h5 class="f-17 mt-3 mb-2 text-primary"><i class="mdi mdi-format-quote-close"></i>検索キーワード：Webマーケティング</h5>
-                                                    </div>
-                                                    
-                                                    <p class="text-primary mb-0 f-14">4時間前</p>
-
-                                                    <div class="col-lg-12">
-                                                        <div class="price-box mt-4">
-                                                            <div class="pricing-badge">
-                                                                <span class="badge">BazzReach</span>
-                                                            </div>
-                                                            <h5 class="f-19 fw-normal line-height_1_6">
-                                                                ツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイートツイート
-                                                            </h5>
-                                                            <div class="mt-5 text-center">
-                                                                <form name="destroy_form" action="#" method="POST">
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <a href="javascript:destroy_form.submit()" class="btn btn-primary w-100" onclick="if(confirm('削除してもよろしいですか?')) { return true } else {return false };">削除</a>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="accordion faq-box mt-4" id="accordionExample">
-                                                
-                                                <div class="accordion-item mt-4">
-                                                    <h2 class="accordion-header" id="headingOne">
-                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" onclick="getAnalysis('1')">
-                                                            <h5 class="mb-0 f-16">詳細分析</h5> <i class="mdi mdi-chevron-down f-20 ms-auto"></i>
-                                                        </button>
-                                                    </h2>
-
-
-                                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
-                                                        <div class="accordion-body">
-                                                            <div class="form-group mt-2">
-                                                                <h5>感情分析：ポジティブ</h5>
-                                                                
-                                                                <div class="table-responsive-sm">
-                                                                    <table class="table table-striped table-hover">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>感情</th>
-                                                                                <th>スコア</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody id="sentiment-tbody">
-                                                                        </tbody>
-                                                                    </table>
-
-                                                                    <table class="table table-striped table-hover">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>キーフレーズ</th>
-                                                                                <th>スコア</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody id="keyPhrase-tbody">
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                                <form name="analysis_form" method="POST" action="#"></form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
-                                                        <div class="accordion-body">
-                                                            <div class="form-group mt-2">
-                                                                <form name="analysis_form" method="POST" action="#">
-                                                                    <a href="javascript:analysis_form.submit()" class="btn btn-primary w-100">詳細分析実行</a>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="accordion-item mt-4">
-                                                    <h2 class="accordion-header" id="headingTwo">
-                                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                                            <h5 class="mb-0 f-16">分析メモ入力</h5> <i class="mdi mdi-chevron-down f-20 ms-auto"></i>
-                                                        </button>
-                                                    </h2>
-                                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
-                                                        <div class="accordion-body">
-                                                            <div class="form-group mt-2">
-                                                                <form name="edit_form" method="POST" action="#">
-                                                                    <input type="hidden" name="_method" value="PUT">
-                                                                    <textarea name="comment" id="comment" rows="3" class="form-control"
-                                                                        placeholder="分析結果メモを入力">メモメモメモメモメモメモメモメモメモメモメモメモメモメモ</textarea>
-                                                                    
-                                                                    <a href="#" class="btn btn-primary w-100">分析をメモ</a>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-
-
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="client-img mt-4">
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                          @endforeach
+                          @endisset
 
                             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -414,6 +290,7 @@
             
             <div class="row">
                 <div class="col-lg-12">
+                    <img src="{{ asset('images/logo.png') }}" alt="" height="24">
 
                     <p class="text-white-50 float-end mb-0">
                         Copyright © 2021 Shunta Sako All Rights Reserved.
