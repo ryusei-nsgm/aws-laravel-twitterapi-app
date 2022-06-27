@@ -16,8 +16,8 @@ class BazzReachController extends Controller
      */
     public function index()
     {
-        return view('bazzreachs.index');
-    }
+        $bazzReachs = BazzReach::orderBy('created_at', 'desc')->get();
+        return view('bazzreachs.index', compact('bazzReachs'));    }
 
     /**
      * Show the form for creating a new resource.
@@ -32,12 +32,17 @@ class BazzReachController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBazzReachRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBazzReachRequest $request)
+    public function store(Request $request)
     {
-        //
+        $bazzreach = new BazzReach();
+        $bazzreach->search_word = $request->input('search_word');
+        $bazzreach->total_tweets = $request->input('total_tweets');
+        $bazzreach->save();
+
+        return redirect()->route('bazzreach.index');
     }
 
     /**
