@@ -238,13 +238,18 @@
                                                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
                                                         <div class="accordion-body">
                                                             <div class="form-group mt-2">
-                                                                <form name="edit_form" method="POST" action="#">
-                                                                    <input type="hidden" name="_method" value="PUT">
-                                                                    <textarea name="comment" id="comment" rows="3" class="form-control"
-                                                                        placeholder="分析結果メモを入力">メモメモメモメモメモメモメモメモメモメモメモメモメモメモ</textarea>
-                                                                    
-                                                                    <a href="#" class="btn btn-primary w-100">分析をメモ</a>
-                                                                </form>
+                                                            <form name="edit_form" method="POST" action="{{route('bazzreach.update',$bazzReach->id)}}">
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" name="_method" value="PUT">
+                                                                <textarea name="comment" id="comment" rows="3" class="form-control"
+                                                                    placeholder="分析結果メモを入力">{{$bazzReach->comment}}</textarea>
+                                                                
+                                                                @if($loop->count > 1)
+                                                                <a href="javascript:edit_form[{{$loop->index}}].submit()" class="btn btn-primary w-100">分析をメモ</a>
+                                                                @else
+                                                                <a href="javascript:edit_form.submit()" class="btn btn-primary w-100">分析をメモ</a>
+                                                                @endif
+                                                            </form>
                                                             </div>
                                                         </div>
                                                     </div>

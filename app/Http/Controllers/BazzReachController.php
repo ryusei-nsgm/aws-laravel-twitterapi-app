@@ -74,9 +74,11 @@ class BazzReachController extends Controller
      * @param  \App\Models\BazzReach  $bazzReach
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBazzReachRequest $request, BazzReach $bazzReach)
+    public function update(Request $request, BazzReach $bazzreach)
     {
-        //
+        $bazzreach->comment = $request->input('comment');
+        $bazzreach->update();
+        return redirect()->route('bazzreach.index');
     }
 
     /**
