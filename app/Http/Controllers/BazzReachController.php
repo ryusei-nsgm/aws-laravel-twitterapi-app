@@ -137,7 +137,7 @@ class BazzReachController extends Controller
             }
             $bazzReachs = $query->orderBy('created_at', 'desc')->get();
         }
-        //return view('bazzreachs.index', compact('bazzReachs'));
+        return view('bazzreachs.index', compact('bazzReachs'));
         $dataArray = [$bazzReachs];
         $data = response()->json($dataArray);
         return $data;
