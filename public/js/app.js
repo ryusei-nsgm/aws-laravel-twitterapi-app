@@ -155,3 +155,23 @@ function typewrite() {
     document.body.appendChild(css);
 };
 window.onload(typewrite());
+
+function getAnalysis(baz_reach_id){
+    axios.get('https://rys-nsgm.tk/bazzreach/'+baz_reach_id+'/result/')
+    .then(function (response) {
+        if($(".carousel-item.active #sentiment-tbody").children().length == 0){
+            response["data"][0].forEach((value,index,array) => {
+                $(".carousel-item.active #sentiment-tbody").append('<tr><td style="width:70%">' + value.type + '</td><td>'+value.score+'</td></tr>');
+            });
+        }
+
+        if($(".carousel-item.active #keyPhrase-tbody").children().length == 0){
+            response["data"][1].forEach((value,index,array) => {
+                $(".carousel-item.active #keyPhrase-tbody").append('<tr><td style="width:70%">' + value.key_phrase + '</td><td>'+value.score+'</td></tr>');
+            });
+        }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
