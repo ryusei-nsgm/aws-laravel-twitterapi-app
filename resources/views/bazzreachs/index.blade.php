@@ -29,9 +29,6 @@
      <!-- START  NAVBAR -->
     <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-light" id="navbar">
         <div class="container">
-            <a class="navbar-brand logo text-uppercase" href="index.html">
-                <img src="{{ asset('images/logo.png') }}" alt="" height="24" />
-            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="mdi mdi-menu"></span>
@@ -74,38 +71,39 @@
                         <div class="home-border my-3 mt-4"></div>
                         <p class="home-subtitle pt-4 mx-auto">キーワードからツイッターを検索して分析しよう</p>
                         <div class="search-form mt-5">
-                          <form name="search_form" method="POST" action="{{route('bazzreach.search')}}">
-                              {{ csrf_field() }}
-                              <input type="text" name="search_word" placeholder="キーワードを入力してください" value="{{ old('search_word') }}">
-                              <button type="submit" class="btn btn-primary btn-round">検索</button>
-                          </form>
+                        <form name="search_form" method="POST" action="{{route('bazzreach.search')}}">
+                            {{ csrf_field() }}
+                            <input type="text" name="search_word" placeholder="キーワードを入力してください" value="{{ old('search_word') }}">
+                            <button type="submit" class="btn btn-primary btn-round">検索</button>
+                        </form>
                         </div>
                     </div>
                 </div>
             </div>
-              @isset ($totalTweets)
-              <form name="create_form" method="POST" action="{{route('bazzreach.store')}}">
-                  <div class="row mt-5 pt-3">
-                      <div class="col-lg-12">
-                          <div class="service-box active mt-4">
-                              <div class="services-icon">
-                                  <i class="pe-7s-display2"></i>
-                              </div>
-                              <div class="mt-3">
-                                  <h5 class="mb-3 f-17 mt-4">{{$searchWord}}</h5>
-                                  <p class="text-muted mb-0">{!! nl2br(e($tweetResult)) !!}</p>
-                                  <div class="mt-3">
-                                      <button type="submit" class="btn btn-primary btn-round">検索ツイートを保存する</button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  {{ csrf_field() }}
-                  <input type="hidden" name="search_word" value="{{$searchWord}}">
-                  <input type="hidden" name="total_tweets" value="{{$totalTweets}}">
-              </form>
-              @endisset
+            
+            @isset ($totalTweets)
+            <form name="create_form" method="POST" action="{{route('bazzreach.store')}}">
+                <div class="row mt-5 pt-3">
+                    <div class="col-lg-12">
+                        <div class="service-box active mt-4">
+                            <div class="services-icon">
+                                <i class="pe-7s-display2"></i>
+                            </div>
+                            <div class="mt-3">
+                                <h5 class="mb-3 f-17 mt-4">{{$searchWord}}</h5>
+                                <p class="text-muted mb-0">{!! nl2br(e($tweetResult)) !!}</p>
+                                <div class="mt-3">
+                                    <button type="submit" class="btn btn-primary btn-round">検索ツイートを保存する</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{ csrf_field() }}
+                <input type="hidden" name="search_word" value="{{$searchWord}}">
+                <input type="hidden" name="total_tweets" value="{{$totalTweets}}">
+            </form>
+            @endisset
         </div>
     </section>
     <!-- END HOME -->
@@ -118,14 +116,14 @@
                     <div class="title-box">
                         <h5 class="sub-title text-primary text-uppercase">Analysis</h5>
                         <div class="search-form mt-5">
-                            <form name="bazz_search_form" method="POST" action="{{route('bazzreach.bazzsearch')}}">
-                                {{ csrf_field() }}
-                                <input type="text" name="keyword" placeholder="キーワード検索で絞り込みができます" value="{{ old('keyword') }}">
-                                <button type="submit" class="btn btn-primary btn-round">検索</button>
-                            </form>
+                        <form name="bazz_search_form" method="POST" action="{{route('bazzreach.bazzsearch')}}">
+                            {{ csrf_field() }}
+                            <input type="text" name="keyword" placeholder="キーワード検索で絞り込みができます" value="{{ old('keyword') }}">
+                            <button type="submit" class="btn btn-primary btn-round">検索</button>
+                        </form>
                         </div>
                         <h5 class="mt-3 fw-normal">
-                            検索データ{{sizeof($bazzReachs)}}件が該当しました。
+                        検索データ{{sizeof($bazzReachs)}}件が該当しました。
                         </h5>
                     </div>
                 </div>
@@ -136,8 +134,8 @@
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
                         <div class="carousel-inner">
 
-                          @isset ($bazzReachs)
-                          @foreach($bazzReachs as $bazzReach)
+                        @isset ($bazzReachs)
+                        @foreach($bazzReachs as $bazzReach)
                             <div class="carousel-item @if($loop->first) active @endif">
                                 <div class="client-box">
                                     <div class="row">
@@ -161,13 +159,18 @@
                                                                 <span class="badge">BazzReach</span>
                                                             </div>
                                                             <h5 class="f-19 fw-normal line-height_1_6">
-                                                                {!! nl2br(e(Str::limit($bazzReach->total_tweets, 300))) !!}
+                                                            {!! nl2br(e(Str::limit($bazzReach->total_tweets, 300))) !!}
                                                             </h5>
                                                             <div class="mt-5 text-center">
-                                                                <form name="destroy_form" action="#" method="POST">
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <a href="javascript:destroy_form.submit()" class="btn btn-primary w-100" onclick="if(confirm('削除してもよろしいですか?')) { return true } else {return false };">削除</a>
-                                                                </form>
+                                                            <form name="destroy_form" action="{{route('bazzreach.destroy',$bazzReach->id)}}" method="POST">
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                @if($loop->count > 1)
+                                                                <a href="javascript:destroy_form[{{$loop->index}}].submit()" class="btn btn-primary w-100" onclick="if(confirm('削除してもよろしいですか?')) { return true } else {return false };">削除</a>
+                                                                @else
+                                                                <a href="javascript:destroy_form.submit()" class="btn btn-primary w-100" onclick="if(confirm('削除してもよろしいですか?')) { return true } else {return false };">削除</a>
+                                                                @endif
+                                                            </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -178,16 +181,16 @@
                                                 
                                                 <div class="accordion-item mt-4">
                                                     <h2 class="accordion-header" id="headingOne">
-                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" onclick="getAnalysis('1')">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" onclick="getAnalysis('{{ $bazzReach->id }}')">
                                                             <h5 class="mb-0 f-16">詳細分析</h5> <i class="mdi mdi-chevron-down f-20 ms-auto"></i>
                                                         </button>
                                                     </h2>
 
-
+                                                    @isset ($bazzReach->sentiment)
                                                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                                                         <div class="accordion-body">
                                                             <div class="form-group mt-2">
-                                                                <h5>感情分析：ポジティブ</h5>
+                                                                <h5>感情分析：{{$bazzReach->sentiment}}</h5>
                                                                 
                                                                 <div class="table-responsive-sm">
                                                                     <table class="table table-striped table-hover">
@@ -212,21 +215,25 @@
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
-                                                                <form name="analysis_form" method="POST" action="#"></form>
                                                             </div>
                                                         </div>
                                                     </div>
-
+                                                    @else
                                                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                                                         <div class="accordion-body">
                                                             <div class="form-group mt-2">
-                                                                <form name="analysis_form" method="POST" action="#">
-                                                                    <a href="javascript:analysis_form.submit()" class="btn btn-primary w-100">詳細分析実行</a>
-                                                                </form>
+                                                            <form name="analysis_form" method="POST" action="{{route('bazzreach.analysis',$bazzReach->id)}}">
+                                                                {{ csrf_field() }}
+                                                                @if($loop->count > 1)
+                                                                <a href="javascript:analysis_form[{{$loop->index}}].submit()" class="btn btn-primary w-100">詳細分析実行</a>
+                                                                @else
+                                                                <a href="javascript:analysis_form.submit()" class="btn btn-primary w-100">詳細分析実行</a>
+                                                                @endif
+                                                            </form>
                                                             </div>
                                                         </div>
                                                     </div>
-
+                                                    @endisset
                                                 </div>
 
                                                 <div class="accordion-item mt-4">
@@ -268,8 +275,8 @@
                                     </div>
                                 </div>
                             </div>
-                          @endforeach
-                          @endisset
+                        @endforeach
+                        @endisset
 
                             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -293,19 +300,13 @@
 
     <section class="bg-footer">
         <div class="container">
-            
             <div class="row">
                 <div class="col-lg-12">
-                    <img src="{{ asset('images/logo.png') }}" alt="" height="24">
-
                     <p class="text-white-50 float-end mb-0">
                         Copyright © 2021 Shunta Sako All Rights Reserved.
                     </p>
-
                 </div>
-
             </div>
-
         </div>
     </section>
 
