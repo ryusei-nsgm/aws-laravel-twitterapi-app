@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\BazzReach;
 use Illuminate\Http\Request;
-use App\Http\api\TwitterApi;
+use App\Http\Api\TwitterApi;
 use Illuminate\Support\Str;
+use App\Models\KeyPhrase;
+use App\Models\Sentiment;
+use App\Http\Api\ComprehendApi;
+
 
 class BazzReachController extends Controller
 {
@@ -17,7 +21,8 @@ class BazzReachController extends Controller
     public function index()
     {
         $bazzReachs = BazzReach::orderBy('created_at', 'desc')->get();
-        return view('bazzreachs.index', compact('bazzReachs'));    }
+        return view('bazzreachs.index', compact('bazzReachs'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -70,7 +75,7 @@ class BazzReachController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBazzReachRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\BazzReach  $bazzReach
      * @return \Illuminate\Http\Response
      */
@@ -87,11 +92,19 @@ class BazzReachController extends Controller
      * @param  \App\Models\BazzReach  $bazzReach
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BazzReach $bazzReach)
+    public function destroy(BazzReach $bazzreach)
     {
-        //
+        $bazzreach->delete();
+        $bazzreach->sentiment()->delete();
+        $bazzreach->keyPhrase()->delete();
+        return redirect()->route('bazzreach.index');
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
         $searchWord = $request->input('search_word');
@@ -102,7 +115,12 @@ class BazzReachController extends Controller
         $bazzReachs = BazzReach::orderBy('created_at', 'desc')->get();
         return view('bazzreachs.index', compact('searchWord','tweetResult','totalTweets','bazzReachs'));
     }
-
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function bazzsearch(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -119,6 +137,69 @@ class BazzReachController extends Controller
             }
             $bazzReachs = $query->orderBy('created_at', 'desc')->get();
         }
-        return view('bazzreachs.index', compact('bazzReachs'));
+        //return view('bazzreachs.index', compact('bazzReachs'));
+        $dataArray = [$bazzReachs];
+        $data = response()->json($dataArray);
+        return $data;
+    }
+
+    /**
+     * Analysis the specified resource from storage.
+     *
+     * @param  \App\Models\BazzReach  $bazzReach
+     * @return \Illuminate\Http\Response
+     */
+    public function analysis(BazzReach $bazzreach)
+    {
+        $comprehendApi = new ComprehendApi();
+        $sentiment = $comprehendApi->tweetSentiment($bazzreach->total_tweets);
+        $keyPhrase = $comprehendApi->tweetKeyPhrases($bazzreach->total_tweets);
+
+        if($sentiment['Sentiment'] == "MIXED"){
+            $bazzreach->sentiment = "混合";
+        }elseif($sentiment['Sentiment'] == "NEGATIVE"){
+            $bazzreach->sentiment = "ネガティブ";
+        }elseif($sentiment['Sentiment'] == "POSITIVE"){
+            $bazzreach->sentiment = "ポジティブ";
+        }elseif($sentiment['Sentiment'] == "NEUTRAL"){
+            $bazzreach->sentiment = "中性";
+        }
+        $bazzreach->update();
+
+        $scores = $sentiment['SentimentScore'];
+        foreach ($scores as $type => $score) {
+            $sentiment = new Sentiment();
+            $sentiment->bazz_reach_id = $bazzreach->id;
+            if($type == "Mixed"){
+                $sentiment->type = "混合";
+            }elseif($type == "Negative"){
+                $sentiment->type = "ネガティブ";
+            }elseif($type == "Positive"){
+                $sentiment->type = "ポジティブ";
+            }elseif($type == "Neutral"){
+                $sentiment->type = "中性";
+            }
+            $sentiment->score = round($score * 100, 1);
+            $sentiment->save();
+        }
+
+        $scores = $keyPhrase['KeyPhrases'];
+        foreach ($scores as $score) {
+            $keyPhrase = new KeyPhrase();
+            $keyPhrase->bazz_reach_id = $bazzreach->id;
+            $keyPhrase->key_phrase = $score["Text"];
+            $keyPhrase->score = round($score["Score"] * 100, 1);
+            $keyPhrase->save();
+        }
+        return redirect()->route('bazzreach.index');
+    }
+
+    public function result(BazzReach $bazzreach)
+    {
+        $sentiments = $bazzreach->sentiment()->orderBy('score', 'desc')->get()->toArray();
+        $keyPhrases = $bazzreach->keyPhrase()->orderBy('score', 'desc')->get()->toArray();
+        $dataArray = [$sentiments,$keyPhrases];
+        $data = response()->json($dataArray);
+        return $data;
     }
 }

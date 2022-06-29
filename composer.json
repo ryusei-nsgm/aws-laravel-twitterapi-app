@@ -7,7 +7,9 @@
     "require": {
         "php": "^8.0.2",
         "abraham/twitteroauth": "^4.0",
+        "aws/aws-sdk-php": "^3.228",
         "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/psr7": "2.4",
         "laravel/framework": "^9.11",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7"
